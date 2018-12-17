@@ -1,18 +1,38 @@
-version: '2'
+version: '3.3'
 
 services:
- minio:
-  image: minio
-  volumes:
-   - data:/data
-  build:
-   context: ./minio
-  ports:
-  - "9001:9000"
-  environment:
-   MINIO_ACCESS_KEY: elfilali
-   MINIO_SECRET_KEY: elfilali
-  command: minio server /data/minio/
+
+  portainer:
+    image: portainer/portainer:latest
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - vol_portainer:/data
+    ports:
+      - "9000:9000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+    command:
+      ["--admin-password", "${PORTAINER_INITIAL_PASSWORD}" ]
+
+  minio:
+    image: minio
+    volumes:
+      - vol_minio:/data
+    build:
+      context: ./minio
+    ports:
+      - "9001:9001"
+    environment:
+      MINIO_ACCESS_KEY: elfilali
+      MINIO_SECRET_KEY: elfilali
+    command: minio server /data/minio/
 
 volumes:
-  data:
+  vol_minio:
+  vol_portainer:
+

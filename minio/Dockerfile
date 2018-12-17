@@ -25,7 +25,16 @@ RUN  \
      go install -v -ldflags "$(go run buildscripts/gen-ldflags.go)" && \
      rm -rf /go/pkg /go/src /usr/local/go && apk del .build-deps
 
-EXPOSE 9000
+RUN go get -d github.com/minio/mc && \
+     cd ${GOPATH}/src/github.com/minio/mc && \
+     make
+
+WORKDIR /~
+
+RUN mc mb minio-dcos/mh9-test && \
+     touch test.txt && mc cp test.txt minio-dcos/mh9-test
+
+EXPOSE 9001
 
 ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]
 
