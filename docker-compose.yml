@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+ minio:
+  image: minio
+  volumes:
+   - data:/data
+  build:
+   context: ./minio
+  ports:
+  - "9001:9000"
+  environment:
+   MINIO_ACCESS_KEY: elfilali
+   MINIO_SECRET_KEY: elfilali
+  command: minio server /data/minio/
+
+volumes:
+  data:
