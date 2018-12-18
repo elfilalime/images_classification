@@ -11,8 +11,6 @@ ENV MINIO_ACCESS_KEY_FILE=access_key \
 
 WORKDIR /go/src/github.com/minio/
 
-#COPY dockerscripts/docker-entrypoint.sh dockerscripts/healthcheck.sh /usr/bin/
-
 RUN  \
      apk add --no-cache ca-certificates 'curl>7.61.0' && \
      apk add --no-cache --virtual .build-deps git && \
@@ -33,3 +31,11 @@ HEALTHCHECK --interval=30s --timeout=5s \
     CMD /usr/bin/healthcheck.sh
 
 CMD ["minio"]
+
+WORKDIR /go/src/github.com/minio/
+
+RUN wget https://dl.minio.io/client/mc/release/linux-amd64/mc && \
+     chmod +x mc && \
+     ./mc mb play/mydatacontainer && \
+     touch test.txt && \
+     ./mc cp test.txt play/mydatacontainer
