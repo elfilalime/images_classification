@@ -31,11 +31,3 @@ HEALTHCHECK --interval=30s --timeout=5s \
     CMD /usr/bin/healthcheck.sh
 
 CMD ["minio"]
-
-WORKDIR /go/src/github.com/minio/
-
-RUN wget https://dl.minio.io/client/mc/release/linux-amd64/mc && \
-     chmod +x mc && \
-     ./mc mb play/mydatacontainer && \
-     touch test.txt && \
-     ./mc cp test.txt play/mydatacontainer
