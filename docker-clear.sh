@@ -10,7 +10,7 @@ docker rmi $(docker images -q)
 docker volume rm $(docker volume ls -q)
 
 # Delete all networks
-# TODO docker network rm c520032c3d31
+docker network rm $(docker network ls -q)
 
 # Delete everything
 # docker system prune --volumes
