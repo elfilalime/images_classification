@@ -3,6 +3,11 @@ version: '3.3'
 # RUN sysctl -w vm.max_map_count=262144 BEFORE RUNNING COMPOSE
 # SEE https://www.elastic.co/guide/en/elasticsearch/reference/6.0/docker.html FOR MORE DETAILS
 
+# Minio Docker Compose
+# https://raw.githubusercontent.com/minio/minio/master/docs/orchestration/docker-compose/docker-compose.yaml
+
+# TODO test with images in URL below
+
 services:
 
   portainer:
@@ -23,19 +28,64 @@ services:
     command:
       ["--admin-password", "${PORTAINER_INITIAL_PASSWORD}"]
 
-  minio:
+  minio1:
     image: minio
-    container_name: container_minio
+    container_name: container_minio_1
     volumes:
-      - vol_minio:/data
+      - vol_minio_1:/data
     build:
       context: ./minio
     ports:
       - "9001:9000"
     environment:
-      MINIO_ACCESS_KEY: elfilali
-      MINIO_SECRET_KEY: elfilali
-    command: minio server /data/minio/
+      MINIO_ACCESS_KEY: 1234
+      MINIO_SECRET_KEY: 1234
+    command: server http://minio1/data http://minio2/data http://minio3/data http://minio4/data
+    # command: minio server /data/minio/
+
+  minio2:
+    image: minio
+    container_name: container_minio_2
+    volumes:
+      - vol_minio_2:/data
+    build:
+      context: ./minio
+    ports:
+      - "9002:9000"
+    environment:
+      MINIO_ACCESS_KEY: 1234
+      MINIO_SECRET_KEY: 1234
+    command: server http://minio1/data http://minio2/data http://minio3/data http://minio4/data
+
+  minio3:
+    image: minio
+    container_name: container_minio_3
+    volumes:
+      - vol_minio_3:/data
+    build:
+      context: ./minio
+    ports:
+      - "9003:9000"
+    environment:
+      MINIO_ACCESS_KEY: 1234
+      MINIO_SECRET_KEY: 1234
+    command: server http://minio1/data http://minio2/data http://minio3/data http://minio4/data
+
+
+  minio4:
+    image: minio
+    container_name: container_minio_4
+    volumes:
+      - vol_minio_4:/data
+    build:
+      context: ./minio
+    ports:
+      - "9004:9000"
+    environment:
+      MINIO_ACCESS_KEY: 1234
+      MINIO_SECRET_KEY: 1234
+    command: server http://minio1/data http://minio2/data http://minio3/data http://minio4/data
+
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
@@ -58,7 +108,10 @@ services:
 
 volumes:
   vol_portainer:
-  vol_minio:
+  vol_minio_1:
+  vol_minio_2:
+  vol_minio_3:
+  vol_minio_4:
   vol_es:
     driver: local
 
