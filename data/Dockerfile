@@ -1,10 +1,6 @@
-FROM golang:1.10.1-alpine3.7
+FROM gettyimages/spark
 
-WORKDIR /go
-
-RUN wget https://dl.minio.io/client/mc/release/linux-amd64/mc
-
-RUN chmod +x mc && \
-     ./mc config host add minio http://0.0.0.0:9001 elfilali elfilali --api "s3v4" --lookup "auto" && \
-     ./mc mb minio/datas && \
-     ./mc cp test.txt minio/datas
+ADD uploadfile.conf /etc/init.d
+ADD uploadfile /etc/init.d
+RUN chmod 777 /etc/init.d/uploadfile && \
+     chmod 777 /etc/init.d/uploadfile.conf
