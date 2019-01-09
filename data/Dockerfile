@@ -1,10 +1,13 @@
-FROM golang:1.10.1-alpine3.7
+FROM gettyimages/spark
 
-WORKDIR /go
+RUN cd ~ && \
+     apt-get update && \
+     apt-get install wget && \
+     wget https://dl.minio.io/client/mc/release/linux-amd64/mc
 
-RUN wget https://dl.minio.io/client/mc/release/linux-amd64/mc
-
-RUN chmod +x mc && \
-     ./mc config host add minio http://0.0.0.0:9001 elfilali elfilali --api "s3v4" --lookup "auto" && \
+RUN cd ~ && \
+     chmod +x mc && \
+     ./mc config host add minio http://minio:9000 elfilali elfilali --api "s3v4" --lookup "auto" && \
      ./mc mb minio/datas && \
+     touch test.txt && \
      ./mc cp test.txt minio/datas
