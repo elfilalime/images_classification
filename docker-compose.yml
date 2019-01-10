@@ -82,6 +82,7 @@ services:
     image: gettyimages/spark
     command: >
       sh -c "/bin/sh /home/uploadfile &&
+             pip install numpy &&
              bin/spark-class org.apache.spark.deploy.master.Master -h master"
     hostname: master
     environment:
@@ -111,7 +112,9 @@ services:
 
   worker:
     image: gettyimages/spark
-    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
+    command: >
+      sh -c "pip install numpy &&
+             bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
     hostname: worker
     environment:
       SPARK_CONF_DIR: /conf
