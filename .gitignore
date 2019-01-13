@@ -1,2 +1,4 @@
 ./.idea
 ./INSA_data_images.zip
+train_labels.npy
+train.npy
