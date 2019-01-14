@@ -166,6 +166,64 @@ services:
       - ./conf/worker:/conf
       - ./data:/tmp/data
 
+  worker3:
+    image: gettyimages/spark
+    command: >
+      sh -c "pip install minio &&
+             pip install numpy &&
+             bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
+    hostname: worker
+    environment:
+      SPARK_CONF_DIR: /conf
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 1g
+      SPARK_WORKER_PORT: 8883
+      SPARK_WORKER_WEBUI_PORT: 8083
+      SPARK_PUBLIC_DNS: localhost
+    links:
+      - master
+      - minio3:minio
+    expose:
+      - 7012
+      - 7013
+      - 7014
+      - 7015
+      - 8883
+    ports:
+      - 8083:8083
+    volumes:
+      - ./conf/worker:/conf
+      - ./data:/tmp/data
+
+  worker4:
+    image: gettyimages/spark
+    command: >
+      sh -c "pip install minio &&
+             pip install numpy &&
+             bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
+    hostname: worker
+    environment:
+      SPARK_CONF_DIR: /conf
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 1g
+      SPARK_WORKER_PORT: 8884
+      SPARK_WORKER_WEBUI_PORT: 8084
+      SPARK_PUBLIC_DNS: localhost
+    links:
+      - master
+      - minio4:minio
+    expose:
+      - 7012
+      - 7013
+      - 7014
+      - 7015
+      - 8884
+    ports:
+      - 8084:8084
+    volumes:
+      - ./conf/worker:/conf
+      - ./data:/tmp/data
+
 #  elasticsearch:
 #    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.0
 #    container_name: container_elasticsearch

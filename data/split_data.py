@@ -16,22 +16,27 @@ def addToServer(image):
 	minioClient = Minio('minio:9000',access_key='minio',secret_key='minio123',secure=False)
 	ret = 0
 	try:
+		t = time.time()
 		tempfile = NamedTemporaryFile()
-		np.save(tempfile, image)
+		np.save(tempfile, image[0])
 		tempfile.seek(0)
 
-		if not minioClient.bucket_exists('datas'):
-			minioClient.make_bucket('datas')
+		if not minioClient.bucket_exists('dat'):
+			minioClient.make_bucket('dat')
 
-		minioClient.fput_object('datas', str(time.time())+".npy", tempfile.name)
-		ret = time.time()
+		minioClient.fput_object('dat', str(t)+".npy", tempfile.name)
+		ret = t
 	except:
 		ret = 0
 
 	return ret
 
 data = np.load('/home/train.npy')
-distData = sc.parallelize(data)
+label = np.load('/home/train_labels.npy')
+
+dat = np.column_stack((data,label))
+
+distData = sc.parallelize(dat)
 
 s = distData.map(addToServer).collect()
 
