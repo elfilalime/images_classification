@@ -224,38 +224,47 @@ services:
       - ./conf/worker:/conf
       - ./data:/tmp/data
 
-#  elasticsearch:
-#    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.0
-#    container_name: container_elasticsearch
-#    environment:
-#    - node.name=es01
-#    - cluster.name=docker-cluster
-#    - bootstrap.memory_lock=true
-#    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
+    container_name: elasticsearch
+    environment:
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
 #    ulimits:
-#      nproc: 65535
 #      memlock:
 #        soft: -1
 #        hard: -1
-#    cap_add:
-#    - ALL
-#    privileged: true
-#    deploy:
-#      mode: global
-#      restart_policy:
-#        condition: on-failure
-#        delay: 5s
-#        max_attempts: 3
-#        window: 120s
-#    volumes:
-#    - vol_es:/usr/share/elasticsearch/data
-#    ports:
-#    - "9200:9200"
-#    - "9300:9300"
+    volumes:
+      - vol_es:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
 
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:6.5.0
+    container_name: kibana
+    environment:
+      SERVER_NAME: localhost
+      ELASTICSEARCH_URL: http://elasticsearch:9200/
+    ports:
+    - 5601:5601
+    ulimits:
+      nproc: 65535
+      memlock:
+        soft: -1
+        hard: -1
+    cap_add:
+    - ALL
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
 
 volumes:
-  vol_minio:
   vol_portainer:
   vol_minio_1:
   vol_minio_2:
