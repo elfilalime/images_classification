@@ -81,7 +81,8 @@ services:
   master:
     image: gettyimages/spark
     command: >
-      sh -c "pip install minio &&
+      sh -c "pip install elasticsearch &&
+             pip install minio &&
              pip install numpy &&
              bin/spark-class org.apache.spark.deploy.master.Master -h master"
     hostname: master
@@ -111,7 +112,8 @@ services:
   worker1:
     image: gettyimages/spark
     command: >
-      sh -c "pip install minio &&
+      sh -c "pip install elasticsearch &&
+             pip install minio &&
              pip install numpy &&
              bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
     hostname: worker
@@ -125,6 +127,7 @@ services:
     links:
       - master
       - minio1:minio
+      - elasticsearch
     expose:
       - 7012
       - 7013
@@ -140,7 +143,8 @@ services:
   worker2:
     image: gettyimages/spark
     command: >
-      sh -c "pip install minio &&
+      sh -c "pip install elasticsearch &&
+             pip install minio &&
              pip install numpy &&
              bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
     hostname: worker
@@ -154,6 +158,7 @@ services:
     links:
       - master
       - minio2:minio
+      - elasticsearch
     expose:
       - 7012
       - 7013
@@ -169,7 +174,8 @@ services:
   worker3:
     image: gettyimages/spark
     command: >
-      sh -c "pip install minio &&
+      sh -c "pip install elasticsearch &&
+             pip install minio &&
              pip install numpy &&
              bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
     hostname: worker
@@ -183,6 +189,7 @@ services:
     links:
       - master
       - minio3:minio
+      - elasticsearch
     expose:
       - 7012
       - 7013
@@ -198,7 +205,8 @@ services:
   worker4:
     image: gettyimages/spark
     command: >
-      sh -c "pip install minio &&
+      sh -c "pip install elasticsearch &&
+             pip install minio &&
              pip install numpy &&
              bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
     hostname: worker
@@ -212,6 +220,7 @@ services:
     links:
       - master
       - minio4:minio
+      - elasticsearch
     expose:
       - 7012
       - 7013

@@ -5,6 +5,7 @@ import time
 from pyspark import SparkContext
 from pyspark import SparkConf
 from tempfile import NamedTemporaryFile
+from elasticsearch import Elasticsearch
  
 conf = SparkConf()
 conf.setMaster("spark://master:7077")
@@ -13,6 +14,7 @@ sc = SparkContext(conf=conf)
 
 
 def addToServer(image):
+	es = Elasticsearch(['http://elasticsearch:9200'])
 	minioClient = Minio('minio:9000',access_key='minio',secret_key='minio123',secure=False)
 	ret = 0
 	try:
@@ -25,6 +27,14 @@ def addToServer(image):
 			minioClient.make_bucket('dat')
 
 		minioClient.fput_object('dat', str(t)+".npy", tempfile.name)
+		
+		doc = {
+		    'image': str(t)+".npy",
+		    'label': str(image[1])
+		}
+		
+		es.index(index="images_classification", doc_type='images',body=doc)
+		
 		ret = t
 	except:
 		ret = 0
