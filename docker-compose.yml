@@ -81,10 +81,7 @@ services:
   master:
     image: gettyimages/spark
     command: >
-      sh -c "pip install elasticsearch &&
-             pip install minio &&
-             pip install numpy &&
-             bin/spark-class org.apache.spark.deploy.master.Master -h master"
+      sh -c "bin/spark-class org.apache.spark.deploy.master.Master -h master"
     hostname: master
     environment:
       MASTER: spark://master:7077
@@ -112,10 +109,7 @@ services:
   worker1:
     image: gettyimages/spark
     command: >
-      sh -c "pip install elasticsearch &&
-             pip install minio &&
-             pip install numpy &&
-             bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
+      sh -c "bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
     hostname: worker
     environment:
       SPARK_CONF_DIR: /conf
@@ -124,6 +118,8 @@ services:
       SPARK_WORKER_PORT: 8881
       SPARK_WORKER_WEBUI_PORT: 8081
       SPARK_PUBLIC_DNS: localhost
+    build:
+      context: ./spark
     links:
       - master
       - minio1:minio
@@ -143,10 +139,7 @@ services:
   worker2:
     image: gettyimages/spark
     command: >
-      sh -c "pip install elasticsearch &&
-             pip install minio &&
-             pip install numpy &&
-             bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
+      sh -c "bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
     hostname: worker
     environment:
       SPARK_CONF_DIR: /conf
@@ -155,6 +148,8 @@ services:
       SPARK_WORKER_PORT: 8882
       SPARK_WORKER_WEBUI_PORT: 8082
       SPARK_PUBLIC_DNS: localhost
+    build:
+      context: ./spark
     links:
       - master
       - minio2:minio
@@ -174,10 +169,7 @@ services:
   worker3:
     image: gettyimages/spark
     command: >
-      sh -c "pip install elasticsearch &&
-             pip install minio &&
-             pip install numpy &&
-             bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
+      sh -c "bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
     hostname: worker
     environment:
       SPARK_CONF_DIR: /conf
@@ -186,6 +178,8 @@ services:
       SPARK_WORKER_PORT: 8883
       SPARK_WORKER_WEBUI_PORT: 8083
       SPARK_PUBLIC_DNS: localhost
+    build:
+      context: ./spark
     links:
       - master
       - minio3:minio
@@ -205,10 +199,7 @@ services:
   worker4:
     image: gettyimages/spark
     command: >
-      sh -c "pip install elasticsearch &&
-             pip install minio &&
-             pip install numpy &&
-             bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
+      sh -c "bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
     hostname: worker
     environment:
       SPARK_CONF_DIR: /conf
@@ -217,6 +208,8 @@ services:
       SPARK_WORKER_PORT: 8884
       SPARK_WORKER_WEBUI_PORT: 8084
       SPARK_PUBLIC_DNS: localhost
+    build:
+      context: ./spark
     links:
       - master
       - minio4:minio

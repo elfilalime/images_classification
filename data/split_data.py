@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from minio import Minio
 from minio.error import ResponseError
 import time
@@ -29,7 +30,7 @@ def addToServer(image):
 		minioClient.fput_object('dat', str(t)+".npy", tempfile.name)
 		
 		doc = {
-		    'image': str(t)+".npy",
+		    'image': "dat/"+str(t)+".npy",
 		    'label': str(image[1])
 		}
 		
@@ -44,7 +45,9 @@ def addToServer(image):
 data = np.load('/home/train.npy')
 label = np.load('/home/train_labels.npy')
 
-dat = np.column_stack((data,label))
+dct = {'data': list(data),'label':list(label)	}
+
+dat = pd.DataFrame(dct).values
 
 distData = sc.parallelize(dat)
 
