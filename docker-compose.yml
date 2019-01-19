@@ -89,6 +89,8 @@ services:
       SPARK_PUBLIC_DNS: localhost
     build:
       context: ./data
+    links:
+      - elasticsearch
     expose:
       - 7001
       - 7002
