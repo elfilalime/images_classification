@@ -40,12 +40,10 @@ def getFromServer(obj):
 
 es = Elasticsearch(['http://0.0.0.0:9200'])
 
-res = es.search(index="images_classification", body={"query": {"match_all": {}}})
+res = es.search(index="images_classification", body={"query": {"match_all": {}}},size=1222)
 
 data = []
 label = []
-
-print(res["hits"]["hits"])
 
 for obj in res["hits"]["hits"]:
 	couple = getFromServer(obj)
@@ -60,15 +58,15 @@ model = Sequential()
 model.add(Dense(32, input_shape=(32,32,3)))
 
 model.add(Flatten())
-model.add(Dense(512))
-model.add(Activation('relu'))
+model.add(Dense(256, activation = "relu"))
 model.add(Dropout(0.5))
-model.add(Dense(5))
-model.add(Activation('softmax'))
+model.add(Dense(5, activation = "softmax"))
 
 model.compile(loss='categorical_crossentropy',
               optimizer='sgd',
               metrics=['accuracy'])
+
+model.summary()
 
 model.fit(data, label, epochs=5, batch_size=32)
 
