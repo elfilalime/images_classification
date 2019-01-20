@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pickle
 import io
 from minio import Minio
 from minio.error import ResponseError
@@ -20,13 +21,13 @@ def addToServer(image):
 	ret = ""
 	try:
 		t = time.time()
-		buf = image[0].tobytes()
+		buf = pickle.dumps(image[0])
 
 		if not minioClient.bucket_exists('dat'):
 			minioClient.make_bucket('dat')
 
 		minioClient.put_object('dat', str(t)+".npy", io.BytesIO(buf),len(buf))
-		
+
 		doc = {
 		    'image': str(t)+".npy",
 		    'label': str(image[1])
