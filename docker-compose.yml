@@ -4,6 +4,7 @@ services:
 
   portainer:
     image: portainer/portainer:latest
+    container_name: portainer
     deploy:
       placement:
         constraints: [node.role == manager]
@@ -72,7 +73,7 @@ services:
     image: gettyimages/spark
     command: >
       sh -c "bin/spark-class org.apache.spark.deploy.master.Master -h master"
-    container_name: master
+    container_name: spark-master
     environment:
       MASTER: spark://master:7077
       SPARK_CONF_DIR: /conf
@@ -102,7 +103,7 @@ services:
     image: gettyimages/spark
     command: >
       sh -c "bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
-    container_name: worker1
+    container_name: spark-worker1
     environment:
       SPARK_CONF_DIR: /conf
       SPARK_WORKER_CORES: 1
@@ -132,7 +133,7 @@ services:
     image: gettyimages/spark
     command: >
       sh -c "bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
-    container_name: worker2
+    container_name: spark-worker2
     environment:
       SPARK_CONF_DIR: /conf
       SPARK_WORKER_CORES: 1
@@ -162,7 +163,7 @@ services:
     image: gettyimages/spark
     command: >
       sh -c "bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
-    container_name: worker3
+    container_name: spark-worker3
     environment:
       SPARK_CONF_DIR: /conf
       SPARK_WORKER_CORES: 1
@@ -192,7 +193,7 @@ services:
     image: gettyimages/spark
     command: >
       sh -c "bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077"
-    container_name: worker4
+    container_name: spark-worker4
     environment:
       SPARK_CONF_DIR: /conf
       SPARK_WORKER_CORES: 1
