@@ -2,20 +2,23 @@ import numpy as np
 import pandas as pd
 import pickle
 import io
-from minio import Minio
-from minio.error import ResponseError
 import time
 from pyspark import SparkContext
 from pyspark import SparkConf
-from elasticsearch import Elasticsearch
+
+
+import sys
 
 conf = SparkConf()
-conf.setMaster("spark://master:7077")
+conf.setMaster("spark://0.0.0.0:7077")
 conf.setAppName("NumpyMult")
 sc = SparkContext(conf=conf)
 
-
 def addToServer(image):
+	from elasticsearch import Elasticsearch
+	from minio import Minio
+	from minio.error import ResponseError
+
 	es = Elasticsearch(['http://elasticsearch:9200'])
 	minioClient = Minio('minio:9000',access_key='minio',secret_key='minio123',secure=False)
 	ret = ""
@@ -42,8 +45,8 @@ def addToServer(image):
 
 	return ret
 
-data = np.load('/home/train.npy')
-label = np.load('/home/train_labels.npy')
+data = np.memmap(sys.argv[1], dtype='float64', mode='r', shape=(171222,32,32,3))
+label = np.memmap(sys.argv[2], dtype='int', mode='r', shape=(171222,5))
 
 dct = {'data': list(data),'label':list(label)}
 
