@@ -17,31 +17,36 @@ I) CONTENU
 
 ---------------------------------------------------------------------------------------------------
 
-II) PROCEDURE D'INSTALLATION
+II) PROCEDURE D'INSTALLATION & UTILISATION
 
 - Se placer dans le répertoire principal et lancer : docker-compose up -d
+- L'ensemble des containers peuvent être managés via Portainer (0.0.0.0:9000)
 
 ---------------------------------------------------------------------------------------------------
 
 III) REFERENCES
 
-L'installation de Docker et Docker Compose peut se faire via les liens suivants :
+Installation de Docker et Docker Compose :
 
 - https://docs.docker.com/install/linux/docker-ce/ubuntu/
 - https://docs.docker.com/compose/install/
 
-Nous nous sommes référés à ces documentations pour l'installation de containers Minio via Docker Compose :
+Installation de containers Minio via Docker Compose :
 
 - https://github.com/minio/minio
 - https://docs.minio.io/docs/deploy-minio-on-docker-compose
 
-Nous nous sommes basés sur ces documentations pour installer Elastic Search et Kibana via Docker Compose :
+Installation de Elasticsearch et Kibana via Docker Compose :
 
 - https://github.com/maxyermayank/docker-compose-elasticsearch-kibana
 - https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 
-Les données utilisées pour les tests sont disponibles ici :
+Données utilisées pour les tests :
 
 - https://filez.insa-toulouse.fr/ewa9170p
+
+SSH un container :
+
+- https://linoxide.com/linux-how-to/ssh-docker-container/
 
 ---------------------------------------------------------------------------------------------------
