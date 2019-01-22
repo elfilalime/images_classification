@@ -79,7 +79,7 @@ services:
       SPARK_CONF_DIR: /conf
       SPARK_PUBLIC_DNS: localhost
     build:
-      context: ./data
+      context: ./spark
     links:
       - elasticsearch
     expose:
