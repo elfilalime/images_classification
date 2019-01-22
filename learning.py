@@ -11,6 +11,8 @@ import numpy as np
 import pickle
 from elasticsearch import Elasticsearch
 
+import sys
+
 conf = SparkConf()
 conf.setMaster("spark://0.0.0.0:7077")
 conf.setAppName("NumpyMult")
@@ -47,7 +49,11 @@ def getFromServer(obj):
 
 es = Elasticsearch(['http://0.0.0.0:9200'])
 
-res = es.search(index="images_classification", body={"query": {"match_all": {}}},size=1222)
+res = es.search(index="images_classification", body={"query": {"match_all": {}}})
+
+size = res["hits"]["total"]
+
+res = es.search(index="images_classification", body={"query": {"match_all": {}}},size=size)
 
 data = []
 label = []
@@ -80,7 +86,9 @@ model.summary()
 
 model.fit(data, label, epochs=5, batch_size=32)
 
+test_label = np.load(sys.argv[2])
+test_data = np.memmap(sys.argv[1], dtype='float64', mode='r', shape=(test_label.shape[0],32,32,3))
 
-scores = model.evaluate(data[:5], label[:5], verbose=1)
+scores = model.evaluate(test_data, test_label, verbose=1)
 print('Test loss:', scores[0])
 print('Test accuracy:', scores[1])
