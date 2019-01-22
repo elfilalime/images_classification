@@ -45,8 +45,8 @@ def addToServer(image):
 
 	return ret
 
-data = np.memmap(sys.argv[1], dtype='float64', mode='r', shape=(171222,32,32,3))
-label = np.memmap(sys.argv[2], dtype='int', mode='r', shape=(171222,5))
+label = np.load(sys.argv[2])
+data = np.memmap(sys.argv[1], dtype='float64', mode='r', shape=(label.shape[0],32,32,3))
 
 dct = {'data': list(data),'label':list(label)}
 

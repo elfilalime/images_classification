@@ -4,15 +4,22 @@ from keras.utils import to_categorical
 from keras.losses import categorical_crossentropy
 from keras.optimizers import SGD
 
+from pyspark import SparkContext
+from pyspark import SparkConf
 
 import numpy as np
 import pickle
-from minio import Minio
-from minio.error import ResponseError
 from elasticsearch import Elasticsearch
 
+conf = SparkConf()
+conf.setMaster("spark://0.0.0.0:7077")
+conf.setAppName("NumpyMult")
+sc = SparkContext(conf=conf)
+
 def getFromServer(obj):
-	minioClient = Minio('0.0.0.0:9001',access_key='minio',secret_key='minio123',secure=False)
+	from minio import Minio
+	from minio.error import ResponseError
+	minioClient = Minio('minio:9000',access_key='minio',secret_key='minio123',secure=False)
 	ret = 0
 	try:
 		recv = minioClient.get_object('dat',obj["_source"]['image'])
@@ -45,10 +52,13 @@ res = es.search(index="images_classification", body={"query": {"match_all": {}}}
 data = []
 label = []
 
-for obj in res["hits"]["hits"]:
-	couple = getFromServer(obj)
-	data.append(couple[0])
-	label.append(couple[1])
+distData = sc.parallelize(res["hits"]["hits"])
+
+s = distData.map(getFromServer).collect()
+
+for obj in s:
+	data.append(obj[0])
+	label.append(obj[1])
 
 data = np.array(data)
 label = np.array(label)
