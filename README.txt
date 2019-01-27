@@ -1,4 +1,4 @@
-README.txt
+﻿README.txt
 
 Ce dépôt contient l'ensemble des fichiers de notre projet intégrateur,
 réalisé en 5e année SDBD à l'INSA Toulouse.
@@ -11,7 +11,6 @@ I) CONTENU
 - Un script bash docker-clear.sh servant à faire un nettoyage complet de Docker sur l'hôte
 - Un docker-compose.yml permettant de mettre en place toute l'architecture Docker du projet
 - Un script python learning.py pour l'apprentissage & envoi de nouvelles données
-- Un dossier data contenant le nécessaire pour build le container Spark Master
 - Un dossier spark contenant le nécessaire pour build les containers Spark Workers
 - Un dossier docs contenant la documentation du projet, notamment le sujet, la présentation et le rapport
 
@@ -21,7 +20,8 @@ II) PROCEDURE D'INSTALLATION & UTILISATION
 
 - Se placer dans le répertoire principal et lancer : docker-compose up -d
 - L'ensemble des containers peuvent être managés via Portainer (0.0.0.0:9000)
-
+- Pour l'enregistrement des données; ce placer sur le host et en executant "python3.5 split_data.py <data> <label>"
+- Pour le learning; ce placer sur le host et en executant "python3.5 learning.py <data_test> <label_test>"
 ---------------------------------------------------------------------------------------------------
 
 III) REFERENCES

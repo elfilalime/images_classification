@@ -70,16 +70,23 @@ data = np.array(data)
 label = np.array(label)
 
 model = Sequential()
+model.add(Conv2D(256, (3, 3), input_shape=data.shape[1:]))
+model.add(Activation("relu"))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Dense(32, input_shape=(32,32,3)))
+model.add(Conv2D(256, (3, 3)))
+model.add(Activation("relu"))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 
 model.add(Flatten())
-model.add(Dense(256, activation = "relu"))
-model.add(Dropout(0.5))
-model.add(Dense(5, activation = "softmax"))
 
-model.compile(loss='categorical_crossentropy',
-              optimizer='sgd',
+model.add(Dense(64))
+
+model.add(Dense(5))
+model.add(Activation('softmax'))
+
+model.compile(loss='binary_crossentropy',
+              optimizer='adam',
               metrics=['accuracy'])
 
 model.summary()
@@ -87,7 +94,7 @@ model.summary()
 model.fit(data, label, epochs=5, batch_size=32)
 
 test_label = np.load(sys.argv[2])
-test_data = np.memmap(sys.argv[1], dtype='float64', mode='r', shape=(test_label.shape[0],32,32,3))
+test_data = np.load(sys.argv[1], mmap_mode='r')
 
 scores = model.evaluate(test_data, test_label, verbose=1)
 print('Test loss:', scores[0])
