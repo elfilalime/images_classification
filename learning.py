@@ -1,8 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Dense,Dropout, Activation, Flatten
-from keras.utils import to_categorical
-from keras.losses import categorical_crossentropy
-from keras.optimizers import SGD
+from keras.layers import Dense, Dropout, Activation, Flatten,Conv2D, MaxPooling2D
 
 from pyspark import SparkContext
 from pyspark import SparkConf
